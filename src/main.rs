@@ -72,7 +72,7 @@ async fn main() -> Result<()> {
         let sig = client.send_transaction_with_config(
             &tx,
             solana_client::rpc_config::RpcSendTransactionConfig {
-                skip_preflight: true,
+                skip_preflight: false,
                 ..Default::default()
             },
         ).await?;
