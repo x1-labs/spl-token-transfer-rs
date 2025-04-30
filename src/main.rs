@@ -3,13 +3,12 @@ use clap::Parser;
 use solana_client::nonblocking::rpc_client::RpcClient;
 use solana_sdk::{
     commitment_config::CommitmentConfig,
-    signature::{read_keypair_file, Keypair, Signer},
+    signature::{read_keypair_file, Signer},
     pubkey::Pubkey,
     transaction::Transaction,
 };
 use spl_associated_token_account::get_associated_token_address;
 use spl_token::instruction::transfer_checked;
-use spl_token::state::Account as TokenAccount;
 use tokio;
 
 #[derive(Parser, Debug)]
@@ -48,6 +47,7 @@ async fn main() -> Result<()> {
     let recipient_token_account = get_associated_token_address(&recipient_pubkey, &mint_pubkey);
 
     for i in 0..10 {
+        let ts = chrono::Utc::now().timestamp_millis();
         let recent_blockhash = client.get_latest_blockhash().await?;
 
         let ix = transfer_checked(
@@ -61,7 +61,6 @@ async fn main() -> Result<()> {
             6,
         )?;
 
-        let ts = chrono::Utc::now().timestamp_millis();
         let tx = Transaction::new_signed_with_payer(
             &[ix],
             Some(&payer.pubkey()),
