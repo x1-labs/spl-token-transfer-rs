@@ -61,6 +61,7 @@ async fn main() -> Result<()> {
             6,
         )?;
 
+        let ts = chrono::Utc::now().timestamp_millis();
         let tx = Transaction::new_signed_with_payer(
             &[ix],
             Some(&payer.pubkey()),
@@ -69,8 +70,6 @@ async fn main() -> Result<()> {
         );
 
         println!("Sending transaction #{}", i + 1);
-        // get current timestamp
-        let ts = chrono::Utc::now().timestamp();
         let sig = client.send_transaction_with_config(
             &tx,
             solana_client::rpc_config::RpcSendTransactionConfig {
@@ -79,7 +78,7 @@ async fn main() -> Result<()> {
             },
         ).await?;
 
-        println!("Transaction sent: {} in {}ms", sig, chrono::Utc::now().timestamp() - ts);
+        println!("Transaction sent: {} in {}ms", sig, chrono::Utc::now().timestamp_millis() - ts);
     }
 
     Ok(())
