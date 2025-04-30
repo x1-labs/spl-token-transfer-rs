@@ -34,7 +34,7 @@ async fn main() -> Result<()> {
     let args = Args::parse();
 
     let client = RpcClient::new_with_commitment(
-        "https://rpc.testnet.x1.xyz".to_string(),
+        "http://localhost:8899".to_string(),
         CommitmentConfig::processed(),
     );
 
