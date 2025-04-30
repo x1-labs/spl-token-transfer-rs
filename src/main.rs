@@ -80,6 +80,8 @@ async fn main() -> Result<()> {
         ).await?;
 
         println!("Transaction sent: {} in {}ms", sig, chrono::Utc::now().timestamp_millis() - ts);
+        // sleep for 1 second
+        tokio::time::sleep(tokio::time::Duration::from_secs(1)).await;
     }
 
     Ok(())
