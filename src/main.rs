@@ -58,7 +58,7 @@ async fn main() -> Result<()> {
             &payer.pubkey(),
             &[],
             (args.token_amount * 1_000_000_f64) as u64, // assumes 6 decimals
-            6,
+            9,
         )?;
 
         let tx = Transaction::new_signed_with_payer(
