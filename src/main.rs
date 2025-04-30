@@ -48,8 +48,8 @@ async fn main() -> Result<()> {
 
     for i in 0..10 {
         let ts = chrono::Utc::now().timestamp_millis();
-        let recent_blockhash = client.get_latest_blockhash().await?;
-
+        let (recent_blockhash, _last_valid_height) = client.get_latest_blockhash_with_commitment(CommitmentConfig::processed()).await?;
+        
         let ix = transfer_checked(
             &spl_token::id(),
             &sender_token_account,
@@ -73,6 +73,7 @@ async fn main() -> Result<()> {
             &tx,
             solana_client::rpc_config::RpcSendTransactionConfig {
                 skip_preflight: false,
+                preflight_commitment: Some(CommitmentConfig::processed().commitment),
                 ..Default::default()
             },
         ).await?;
